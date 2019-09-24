@@ -1,0 +1,1 @@
+wp_favourite_button
