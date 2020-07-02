@@ -68,9 +68,16 @@ class Wp_favourite_button {
 		$this->set_locale();
 		$this->add_rest_routes();
 
+		add_action('init', array($this, 'setup_global_data'), 10);
+
 
 	}
 
+	public function setup_global_data(){
+		$userFavourites = array();
+		global $userFavourites;
+		$userFavourites = get_user_favourite_list(get_current_user_id());
+	}
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
@@ -88,6 +95,11 @@ class Wp_favourite_button {
 	 * @access   private
 	 */
 	private function load_dependencies() {
+
+		/**
+		 * The helper functions to interact with DB and stuff.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helper-functions.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.

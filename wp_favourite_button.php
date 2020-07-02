@@ -45,7 +45,7 @@ function activate_wp_favourite_button() {
 	global $wpdb;
 
 	$charset_collate = $wpdb->get_charset_collate();
-	$table_name = $wpdb->prefix . 'favourite_offices';
+	$table_name = $wpdb->prefix . 'favourite_list';
 	$user_table = $wpdb->prefix . 'users';
 	$post_table = $wpdb->prefix . 'posts';
 	$sql = "CREATE TABLE $table_name (
@@ -54,6 +54,7 @@ function activate_wp_favourite_button() {
 		post_id bigint(20) UNSIGNED NOT NULL,
 	  	time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 	  	PRIMARY KEY (fav_id),
+		UNIQUE KEY comp_key (user_id, post_id),
 		FOREIGN KEY (user_id) REFERENCES $user_table(ID),
 		FOREIGN KEY (post_id) REFERENCES $post_table(ID)
 	) $charset_collate;";
@@ -91,7 +92,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp_favourite_button.php';
 function run_wp_favourite_button() {
 
 	$plugin = new Wp_favourite_button();
-	$plugin->run();
+	//$plugin->run();
 
 }
 run_wp_favourite_button();

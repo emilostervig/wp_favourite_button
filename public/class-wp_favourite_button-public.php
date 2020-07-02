@@ -51,8 +51,10 @@ class Wp_favourite_button_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->enqueue_styles();
-		$this->enqueue_scripts();
+
+		add_action('wp_enqueue_scripts', array($this, 'enqueue_styles' ));
+		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts' ));
+
 	}
 
 	/**
@@ -97,12 +99,14 @@ class Wp_favourite_button_Public {
 		 * class.
 		 */
 
-		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp_favourite_button-public.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( $this->plugin_name.'_public', plugin_dir_url( __FILE__ ) . 'js/wp_favourite_button-public.js', array( 'jquery' ), $this->version, false );
 
-		wp_localize_script($this->plugin_name, 'ajax_data', array(
-   			'ajaxurl' => admin_url('admin-ajax.php')
+		wp_localize_script($this->plugin_name.'_public', 'favourite_data', array(
+   			'token' => wp_create_nonce($this->plugin_name),
+			'api_token' => wp_create_nonce('wp_rest'),
+			'add_route' => get_rest_url(null, 'wp-favourite-list/v1/favourite-post')
 		));
-		wp_enqueue_script( $this->plugin_name);
+		wp_enqueue_script( $this->plugin_name.'_public' );
 	}
 
 }

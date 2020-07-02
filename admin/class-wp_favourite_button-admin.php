@@ -52,6 +52,8 @@ class Wp_favourite_button_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_styles' ));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts' ));
 	}
 
 	/**
@@ -96,7 +98,7 @@ class Wp_favourite_button_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp_favourite_button-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name.'_admin', plugin_dir_url( __FILE__ ) . 'js/wp_favourite_button-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
